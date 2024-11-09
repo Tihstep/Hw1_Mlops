@@ -1,10 +1,13 @@
 from pydantic import BaseModel
+from typing import Dict, Any, List
 
 class TrainRequest(BaseModel):
-    pass
+    model_type: str
+    hyperparameters: Dict[str, Any] = {}
 
 class PredictRequest(BaseModel):
-    pass
+    model_id: str
+    data: List[List[float]]
 
 class DeleteRequest(BaseModel):
-    pass
+    model_id: str
