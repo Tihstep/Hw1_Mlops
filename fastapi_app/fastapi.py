@@ -1,5 +1,5 @@
 from fastapi import FastAPI, HTTPException
-
+from api.pydantic import TrainRequest, PredictRequest, DeleteRequest
 
 app = FastAPI()
 
@@ -16,6 +16,10 @@ def train_model_endpoint(request):
 def predict_endpoint(request):
     predictions = predict(request.model_id, request.data)
     return {"predictions": predictions}
+
+@app.delete("/delete")
+def delete_model_endpoint(request):
+    pass
 
 @app.get("/status")
 def health_check():
