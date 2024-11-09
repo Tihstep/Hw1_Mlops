@@ -9,8 +9,11 @@ def show_models():
 
 @app.post("/train")
 def train_model_endpoint(request: TrainRequest):
-    model_id = train_model(request.model_type, request.hyperparameters)
-    return {"model_id": model_id}
+    model_type = train_model(request.model_type,
+                           request.hyperparameters,
+                           request.data
+                           )
+    return {"model_type": model_type}
 
 @app.post("/predict")
 def predict_endpoint(request: PredictRequest):
