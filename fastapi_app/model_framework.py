@@ -31,4 +31,3 @@ def list_models():
     return ["logreg_with_regularization", 
             "logreg_without_regularization"]
 
-            

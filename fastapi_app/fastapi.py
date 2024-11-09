@@ -1,5 +1,6 @@
 from fastapi import FastAPI, HTTPException
-from api.pydantic import TrainRequest, PredictRequest, DeleteRequest
+from .models import train_model, predict, delete_model, list_models
+from .pydantic import TrainRequest, PredictRequest, DeleteRequest
 
 app = FastAPI()
 
