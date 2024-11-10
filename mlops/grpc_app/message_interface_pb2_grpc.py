@@ -3,7 +3,7 @@
 import grpc
 import warnings
 
-from grpc_app import message_interface_pb2 as grpc__app_dot_message__interface__pb2
+import message_interface_pb2 as message__interface__pb2
 
 GRPC_GENERATED_VERSION = '1.67.1'
 GRPC_VERSION = grpc.__version__
@@ -18,7 +18,7 @@ except ImportError:
 if _version_not_supported:
     raise RuntimeError(
         f'The grpc package installed is at version {GRPC_VERSION},'
-        + f' but the generated code in grpc_app/message_interface_pb2_grpc.py depends on'
+        + f' but the generated code in message_interface_pb2_grpc.py depends on'
         + f' grpcio>={GRPC_GENERATED_VERSION}.'
         + f' Please upgrade your grpc module to grpcio>={GRPC_GENERATED_VERSION}'
         + f' or downgrade your generated code using grpcio-tools<={GRPC_VERSION}.'
@@ -36,18 +36,18 @@ class ModelServiceStub(object):
         """
         self.TrainModel = channel.unary_unary(
                 '/ModelService/TrainModel',
-                request_serializer=grpc__app_dot_message__interface__pb2.TrainRequest.SerializeToString,
-                response_deserializer=grpc__app_dot_message__interface__pb2.TrainResponse.FromString,
+                request_serializer=message__interface__pb2.TrainRequest.SerializeToString,
+                response_deserializer=message__interface__pb2.TrainResponse.FromString,
                 _registered_method=True)
         self.Predict = channel.unary_unary(
                 '/ModelService/Predict',
-                request_serializer=grpc__app_dot_message__interface__pb2.PredictRequest.SerializeToString,
-                response_deserializer=grpc__app_dot_message__interface__pb2.PredictResponse.FromString,
+                request_serializer=message__interface__pb2.PredictRequest.SerializeToString,
+                response_deserializer=message__interface__pb2.PredictResponse.FromString,
                 _registered_method=True)
         self.DeleteModel = channel.unary_unary(
                 '/ModelService/DeleteModel',
-                request_serializer=grpc__app_dot_message__interface__pb2.DeleteRequest.SerializeToString,
-                response_deserializer=grpc__app_dot_message__interface__pb2.DeleteResponse.FromString,
+                request_serializer=message__interface__pb2.DeleteRequest.SerializeToString,
+                response_deserializer=message__interface__pb2.DeleteResponse.FromString,
                 _registered_method=True)
 
 
@@ -77,18 +77,18 @@ def add_ModelServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
             'TrainModel': grpc.unary_unary_rpc_method_handler(
                     servicer.TrainModel,
-                    request_deserializer=grpc__app_dot_message__interface__pb2.TrainRequest.FromString,
-                    response_serializer=grpc__app_dot_message__interface__pb2.TrainResponse.SerializeToString,
+                    request_deserializer=message__interface__pb2.TrainRequest.FromString,
+                    response_serializer=message__interface__pb2.TrainResponse.SerializeToString,
             ),
             'Predict': grpc.unary_unary_rpc_method_handler(
                     servicer.Predict,
-                    request_deserializer=grpc__app_dot_message__interface__pb2.PredictRequest.FromString,
-                    response_serializer=grpc__app_dot_message__interface__pb2.PredictResponse.SerializeToString,
+                    request_deserializer=message__interface__pb2.PredictRequest.FromString,
+                    response_serializer=message__interface__pb2.PredictResponse.SerializeToString,
             ),
             'DeleteModel': grpc.unary_unary_rpc_method_handler(
                     servicer.DeleteModel,
-                    request_deserializer=grpc__app_dot_message__interface__pb2.DeleteRequest.FromString,
-                    response_serializer=grpc__app_dot_message__interface__pb2.DeleteResponse.SerializeToString,
+                    request_deserializer=message__interface__pb2.DeleteRequest.FromString,
+                    response_serializer=message__interface__pb2.DeleteResponse.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -116,8 +116,8 @@ class ModelService(object):
             request,
             target,
             '/ModelService/TrainModel',
-            grpc__app_dot_message__interface__pb2.TrainRequest.SerializeToString,
-            grpc__app_dot_message__interface__pb2.TrainResponse.FromString,
+            message__interface__pb2.TrainRequest.SerializeToString,
+            message__interface__pb2.TrainResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -143,8 +143,8 @@ class ModelService(object):
             request,
             target,
             '/ModelService/Predict',
-            grpc__app_dot_message__interface__pb2.PredictRequest.SerializeToString,
-            grpc__app_dot_message__interface__pb2.PredictResponse.FromString,
+            message__interface__pb2.PredictRequest.SerializeToString,
+            message__interface__pb2.PredictResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -170,8 +170,8 @@ class ModelService(object):
             request,
             target,
             '/ModelService/DeleteModel',
-            grpc__app_dot_message__interface__pb2.DeleteRequest.SerializeToString,
-            grpc__app_dot_message__interface__pb2.DeleteResponse.FromString,
+            message__interface__pb2.DeleteRequest.SerializeToString,
+            message__interface__pb2.DeleteResponse.FromString,
             options,
             channel_credentials,
             insecure,

@@ -1,8 +1,8 @@
 import grpc
 from concurrent import futures
-from ..fast_api.models import train_model, predict, delete_model
-import grpc.model_service_pb2 as pb2
-import grpc.model_service_pb2_grpc as pb2_grpc
+from mlops.fastapi_app.model_framework import train_model, predict, delete_model
+from mlops.grpc_app import message_interface_pb2 as pb2
+from mlops.grpc_app import message_interface_pb2_grpc as pb2_grpc
 
 class ModelService(pb2_grpc.ModelServiceServicer):
     def TrainModel(self, request, context):
