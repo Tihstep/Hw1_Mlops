@@ -97,12 +97,18 @@ uvicorn api.main:app --reload
    - `message_interface.proto`: protobuf протокол определяющий интерфейс сообщений и методов.
 - `dashboard.py`: Файл, формирующий веб-дашборд
 
-Альтернативный вариант - grpc.
+## Альтернативный вариант - grpc.
 - Запуск сервера
 ```bash
    python -m grpc_tools.protoc -I. --python_out=. --grpc_python_out=. grpc_app/message_interface.proto
 ```
-
+- Запуск клиента
 ```bash
    poetry run mlops/grpc_app/grpc_client.py
+```
+
+
+## Запуск дашборда.
+```bash
+poetry run streamlit run mlops/dashboard.py
 ```
