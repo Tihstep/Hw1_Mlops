@@ -31,7 +31,7 @@
    cd <имя папки репозитория>
    
 2. **Установите зависимости**
-   ```bash
+   ```
    pipx install poetry
    poetry install
    
