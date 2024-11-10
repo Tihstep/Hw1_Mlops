@@ -43,6 +43,7 @@ uvicorn fastapi_app:app --reload
 
 uvicorn api.main:app --reload
 
+Примеры запросов: 
 - Train Request
 
 `curl -X POST "http://localhost:8000/train" \
@@ -85,7 +86,7 @@ uvicorn api.main:app --reload
 `curl -X GET "http://localhost:8000/models"`
 
 
-Структура проекта
+##Структура проекта
 - fastapi_app
    - `fastapi_app.py`: основной файл приложения FastAPI, в котором определены все эндпоинты API.
    - `model_framework.py`: модуль для управления моделями (обучение, предсказание, удаление, список).
