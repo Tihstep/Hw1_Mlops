@@ -11,7 +11,7 @@ Train Request
           },
           "data": {
               "train_data": [[1, 2], [3, 4], [5, 6]],
-              "target": [3, 5, 11]
+              "target": [3, 7, 11]
           }
         }'`
 

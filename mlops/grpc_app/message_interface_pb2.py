@@ -24,7 +24,7 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x17message_interface.proto\"\xeb\x01\n\x0cTrainRequest\x12\x12\n\nmodel_type\x18\x01 \x01(\t\x12;\n\x0fhyperparameters\x18\x02 \x03(\x0b\x32\".TrainRequest.HyperparametersEntry\x12%\n\x04\x64\x61ta\x18\x03 \x03(\x0b\x32\x17.TrainRequest.DataEntry\x1a\x36\n\x14HyperparametersEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\x1a+\n\tDataEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\"!\n\rTrainResponse\x12\x10\n\x08model_id\x18\x01 \x01(\t\"0\n\x0ePredictRequest\x12\x10\n\x08model_id\x18\x01 \x01(\t\x12\x0c\n\x04\x64\x61ta\x18\x02 \x03(\x02\"&\n\x0fPredictResponse\x12\x13\n\x0bpredictions\x18\x01 \x03(\x02\"!\n\rDeleteRequest\x12\x10\n\x08model_id\x18\x01 \x01(\t\"!\n\x0e\x44\x65leteResponse\x12\x0f\n\x07success\x18\x01 \x01(\x08\x32\x99\x01\n\x0cModelService\x12+\n\nTrainModel\x12\r.TrainRequest\x1a\x0e.TrainResponse\x12,\n\x07Predict\x12\x0f.PredictRequest\x1a\x10.PredictResponse\x12.\n\x0b\x44\x65leteModel\x12\x0e.DeleteRequest\x1a\x0f.DeleteResponseb\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x17message_interface.proto\"\xc7\x01\n\x0cTrainRequest\x12\x12\n\nmodel_type\x18\x01 \x01(\t\x12;\n\x0fhyperparameters\x18\x02 \x03(\x0b\x32\".TrainRequest.HyperparametersEntry\x12\x0e\n\x06target\x18\x03 \x03(\x02\x12\x1e\n\ntrain_data\x18\x04 \x03(\x0b\x32\n.TrainData\x1a\x36\n\x14HyperparametersEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\"\x1d\n\tTrainData\x12\x10\n\x08\x66\x65\x61tures\x18\x01 \x03(\x02\"!\n\rTrainResponse\x12\x10\n\x08model_id\x18\x01 \x01(\t\"0\n\x0ePredictRequest\x12\x10\n\x08model_id\x18\x01 \x01(\t\x12\x0c\n\x04\x64\x61ta\x18\x02 \x03(\x02\"&\n\x0fPredictResponse\x12\x13\n\x0bpredictions\x18\x01 \x03(\x02\"!\n\rDeleteRequest\x12\x10\n\x08model_id\x18\x01 \x01(\t\"!\n\x0e\x44\x65leteResponse\x12\x0f\n\x07success\x18\x01 \x01(\x08\x32\x99\x01\n\x0cModelService\x12+\n\nTrainModel\x12\r.TrainRequest\x1a\x0e.TrainResponse\x12,\n\x07Predict\x12\x0f.PredictRequest\x1a\x10.PredictResponse\x12.\n\x0b\x44\x65leteModel\x12\x0e.DeleteRequest\x1a\x0f.DeleteResponseb\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
@@ -33,24 +33,22 @@ if not _descriptor._USE_C_DESCRIPTORS:
   DESCRIPTOR._loaded_options = None
   _globals['_TRAINREQUEST_HYPERPARAMETERSENTRY']._loaded_options = None
   _globals['_TRAINREQUEST_HYPERPARAMETERSENTRY']._serialized_options = b'8\001'
-  _globals['_TRAINREQUEST_DATAENTRY']._loaded_options = None
-  _globals['_TRAINREQUEST_DATAENTRY']._serialized_options = b'8\001'
   _globals['_TRAINREQUEST']._serialized_start=28
-  _globals['_TRAINREQUEST']._serialized_end=263
-  _globals['_TRAINREQUEST_HYPERPARAMETERSENTRY']._serialized_start=164
-  _globals['_TRAINREQUEST_HYPERPARAMETERSENTRY']._serialized_end=218
-  _globals['_TRAINREQUEST_DATAENTRY']._serialized_start=220
-  _globals['_TRAINREQUEST_DATAENTRY']._serialized_end=263
-  _globals['_TRAINRESPONSE']._serialized_start=265
-  _globals['_TRAINRESPONSE']._serialized_end=298
-  _globals['_PREDICTREQUEST']._serialized_start=300
-  _globals['_PREDICTREQUEST']._serialized_end=348
-  _globals['_PREDICTRESPONSE']._serialized_start=350
-  _globals['_PREDICTRESPONSE']._serialized_end=388
-  _globals['_DELETEREQUEST']._serialized_start=390
-  _globals['_DELETEREQUEST']._serialized_end=423
-  _globals['_DELETERESPONSE']._serialized_start=425
-  _globals['_DELETERESPONSE']._serialized_end=458
-  _globals['_MODELSERVICE']._serialized_start=461
-  _globals['_MODELSERVICE']._serialized_end=614
+  _globals['_TRAINREQUEST']._serialized_end=227
+  _globals['_TRAINREQUEST_HYPERPARAMETERSENTRY']._serialized_start=173
+  _globals['_TRAINREQUEST_HYPERPARAMETERSENTRY']._serialized_end=227
+  _globals['_TRAINDATA']._serialized_start=229
+  _globals['_TRAINDATA']._serialized_end=258
+  _globals['_TRAINRESPONSE']._serialized_start=260
+  _globals['_TRAINRESPONSE']._serialized_end=293
+  _globals['_PREDICTREQUEST']._serialized_start=295
+  _globals['_PREDICTREQUEST']._serialized_end=343
+  _globals['_PREDICTRESPONSE']._serialized_start=345
+  _globals['_PREDICTRESPONSE']._serialized_end=383
+  _globals['_DELETEREQUEST']._serialized_start=385
+  _globals['_DELETEREQUEST']._serialized_end=418
+  _globals['_DELETERESPONSE']._serialized_start=420
+  _globals['_DELETERESPONSE']._serialized_end=453
+  _globals['_MODELSERVICE']._serialized_start=456
+  _globals['_MODELSERVICE']._serialized_end=609
 # @@protoc_insertion_point(module_scope)

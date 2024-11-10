@@ -4,10 +4,16 @@ from mlops.fastapi_app.model_framework import train_model, predict, delete_model
 from mlops.grpc_app import message_interface_pb2 as pb2
 from mlops.grpc_app import message_interface_pb2_grpc as pb2_grpc
 
+
 class ModelService(pb2_grpc.ModelServiceServicer):
     def TrainModel(self, request, context):
-        model_id = train_model(request.model_type, dict(request.hyperparameters, [request.data]))
-        return pb2.TrainResponse(model_id=model_id)
+        data = {
+            "target": list(request.target),
+            "train_data": [list(sample.features) for sample in request.train_data]
+        }
+        model_id = train_model(request.model_type, request.hyperparameters, data)
+        print(model_id)
+        return pb2.TrainResponse(model_id=str(model_id))
 
     def Predict(self, request, context):
         predictions = predict(request.model_id, [request.data])

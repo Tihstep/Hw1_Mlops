@@ -9,7 +9,12 @@ service ModelService {
 message TrainRequest {
   string model_type = 1;
   map<string, string> hyperparameters = 2;
-  map<string, string> data = 3;
+  repeated float target = 3;
+  repeated TrainData train_data = 4; // Define train_data as a list of lists
+}
+
+message TrainData {
+  repeated float features = 1;
 }
 
 message TrainResponse {
