@@ -1,6 +1,7 @@
 # Hw1_Mlops
 
 Train Request
+
 `curl -X POST "http://localhost:8000/train" \
     -H "Content-Type: application/json" \
     -d '{
@@ -16,6 +17,7 @@ Train Request
         }'`
 
 Predict Request
+
 `curl -X POST "http://localhost:8000/predict" \
     -H "Content-Type: application/json" \
     -d '{
@@ -24,6 +26,7 @@ Predict Request
         }'`
 
 Delete Request
+
 `curl -X DELETE "http://localhost:8000/delete" \
     -H "Content-Type: application/json" \
     -d '{
@@ -31,7 +34,9 @@ Delete Request
         }'`
 
 Healthcheck Request
+
 `curl -X GET "http://localhost:8000/status"`
 
 Listing Request
+
 `curl -X GET "http://localhost:8000/models"`
