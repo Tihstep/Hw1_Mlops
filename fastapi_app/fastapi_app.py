@@ -1,9 +1,13 @@
 
 from fastapi import FastAPI, HTTPException
-from .models import train_model, predict, delete_model, list_models
+from .model_framework import train_model, predict, delete_model, list_models
 from .pydantic import TrainRequest, PredictRequest, DeleteRequest
+import logging
 
 app = FastAPI()
+
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+logger = logging.getLogger(__name__)
 
 @app.get("/models")
 def show_models():
@@ -39,17 +43,17 @@ def predict_endpoint(request: PredictRequest):
         raise HTTPException(status_code=404, detail=str(e))
 
 @app.delete("/delete")
-def delete_model_endpoint(request: : DeleteRequest):
+def delete_model_endpoint(request: DeleteRequest):
     """API delete model from model registry(dict)"""
-    logger.info("Получен запрос на удаление модели: %s", model_id)
+    logger.info("Получен запрос на удаление модели: %s", request.model_id)
     if delete_model(request.model_id):
-        logger.info("Модель %s успешно удалена", model_id)
+        logger.info("Модель %s успешно удалена", request.model_id)
         return {"status": "deleted"}
     raise HTTPException(status_code=404, detail="Sorry, model not found!")
 
 @app.get("/status")
-"""API check if servise is available."""
 def health_check():
+    """API check if servise is available."""
     logger.info("Запрос проверки статуса сервиса")
     return {"status": "All is OK! Server fill himself good!"}
 

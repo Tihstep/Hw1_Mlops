@@ -1,9 +1,8 @@
 from sklearn.linear_model import LogisticRegression
 from sklearn.ensemble import RandomForestClassifier
-from typing import Dict, Any
+from typing import Dict, Any, List
 
 models = {}
-
 
 def train_model(model_type: str, hyperparameters: Dict[str, Any], data: Dict[str, Any]):
     """
@@ -36,10 +35,10 @@ def train_model(model_type: str, hyperparameters: Dict[str, Any], data: Dict[str
 
 
     model.fit(train_data, target)
-    models[model_id] = model
+    models[str(model_id)] = model
     return model_id
 
-def predict(model_id: str, data: list):
+def predict(model_id: str, data: List[List[float]]):
     """
     Make a prediction using a model_id model
     
@@ -47,7 +46,7 @@ def predict(model_id: str, data: list):
         ----------
         model_id : `str`
             Which type of model will be used for prediction.
-        data: `Dict[str, Any]`
+        data: `List[List[float]]`
             Train_data and target_data for training of model.
 
         Returns
@@ -56,6 +55,7 @@ def predict(model_id: str, data: list):
             Result of model usage for data.
     """
     model = models.get(model_id)
+    print(model, models)
     if not model:
         raise ValueError("Model not found")
     return model.predict(data).tolist()
@@ -69,6 +69,7 @@ def delete_model(model_id: str):
 
 def list_models():
     """List all available models"""
-    return ["logreg_with_regularization", 
-            "logreg_without_regularization"]
+    if len(models) == 0:
+        return "System does not have any trained models"
+    return " ".join(list(map(str, models.values())))
 
