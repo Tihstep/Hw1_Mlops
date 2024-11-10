@@ -1,4 +1,5 @@
 from sklearn.linear_model import LogisticRegression
+from sklearn.ensemble import RandomForestClassifier
 from typing import Dict, Any
 
 models = {}
@@ -22,10 +23,11 @@ def train_model(model_type: str, hyperparameters: Dict[str, Any], data: Dict[str
         model_type : `str`
             Name of model type
     """
-    if model_type == "logreg_with_regularization":
+    model_id = hash(model_type + str(hyperparameters.items()))
+    if model_type == "logistic_regression":
         model = LogisticRegression(**hyperparameters)
-    elif model_type == "logreg_without_regularization":
-        model = LogisticRegression(**hyperparameters)
+    elif model_type == "random_forest":
+        model = RandomForestClassifier(**hyperparameters)
     else:
         raise ValueError("Wrong unsupported model type")
 
@@ -34,16 +36,16 @@ def train_model(model_type: str, hyperparameters: Dict[str, Any], data: Dict[str
 
 
     model.fit(train_data, target)
-    models[model_type] = model
-    return model_type
+    models[model_id] = model
+    return model_id
 
-def predict(model_type: str, data: list):
+def predict(model_id: str, data: list):
     """
-    Make a prediction using a model_type model
+    Make a prediction using a model_id model
     
         Parameters
         ----------
-        model_type : `str`
+        model_id : `str`
             Which type of model will be used for prediction.
         data: `Dict[str, Any]`
             Train_data and target_data for training of model.
@@ -53,15 +55,15 @@ def predict(model_type: str, data: list):
         prediction : `list`
             Result of model usage for data.
     """
-    model = models.get(model_type)
+    model = models.get(model_id)
     if not model:
         raise ValueError("Model not found")
     return model.predict(data).tolist()
 
-def delete_model(model_type: str):
-    """Delete a model_type model."""
-    if model_type in models:
-        del models[model_type]
+def delete_model(model_id: str):
+    """Delete a model_id model."""
+    if model_id in models:
+        del models[model_id]
         return True
     return False
 
