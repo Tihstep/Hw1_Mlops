@@ -1,5 +1,7 @@
 # Hw1_Mlops
 
+uvicorn api.main:app --reload
+
 Train Request
 
 `curl -X POST "http://localhost:8000/train" \

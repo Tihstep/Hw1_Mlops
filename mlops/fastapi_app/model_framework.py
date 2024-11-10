@@ -20,7 +20,7 @@ def train_model(model_type: str, hyperparameters: Dict[str, Any], data: Dict[str
             Which type of model will be trained.
         hyperparameters: Dict[str, Any] : `Dict[str, Any]`
             Human setting parameters needed to learn model.
-        data: `Dict[str, Any]`
+        data: `Dict[str, Any]`  
             Train_data and target_data for training of model.
 
         Returns
@@ -61,7 +61,6 @@ def predict(model_id: str, data: List[List[float]]):
             Result of model usage for data.
     """
     model = models.get(model_id)
-    print(model, models)
     if not model:
         raise ValueError("Model not found")
     return model.predict(data).tolist()
@@ -77,5 +76,5 @@ def list_models():
     """List all available models"""
     if len(models) == 0:
         return "System does not have any trained models"
-    return " ".join(list(map(str, models.values())))
+    return list(map(str, list(models.keys())))
 
