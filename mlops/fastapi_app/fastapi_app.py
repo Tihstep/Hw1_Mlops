@@ -19,11 +19,18 @@ db = { # Потом надо заменить на postrgres, для автор�
 }
 
 def authenticate_user(username: str, password: str):
-    pass
+    user = fake_users_db.get(username)
+    if not user or user["password"] != password:
+        return False
+    return user
 
 @app.post("/token")
 def login(username: str, password: str):
-    pass
+    user = authenticate_user(username, password)
+    if not user:
+        raise HTTPException(status_code=401, detail="Invalid credentials")
+    access_token = create_access_token(data={"sub": user["username"]}, expires_delta=timedelta(minutes=30))
+    return {"access_token": access_token, "token_type": "bearer"}
 
 @app.get("/models")
 def show_models():
