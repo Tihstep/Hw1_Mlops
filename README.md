@@ -41,19 +41,27 @@
    poetry install
    
 3. **Запуск сервера FastApi**
-uvicorn fastapi_app:app --reload
+uvicorn mlops.fastapi_app.fastapi_app:app --reload
 
 4. **Открытие документации**
 Перейдите на http://127.0.0.1:8000/docs для использования Swagger UI, чтобы легко протестировать все эндпоинты API.
 
-uvicorn api.main:app --reload
+uvicorn mlops.fastapi_app.fastapi_app:app --reload
 
-Примеры запросов: 
+Примеры запросов:
+- Token Request
+```bash
+curl -X POST "http://localhost:8000/token" \
+    -H "Content-Type: application/json" \
+    -d '{"username" : "vertica", "password": "vertica"}'
+
+```
 - Train Request
 ```bash
 curl -X POST "http://localhost:8000/train" \
     -H "Content-Type: application/json" \
-    -d '{
+    -H "Authorization: Bearer <token>" \
+    -d '{   
           "model_type": "logistic_regression",
           "hyperparameters": {
               "max_iter": 100,
@@ -70,25 +78,28 @@ curl -X POST "http://localhost:8000/train" \
 ```bash
 curl -X POST "http://localhost:8000/predict" \
     -H "Content-Type: application/json" \
+    -H "Authorization: Bearer <token>" \
     -d '{
-          "model_id": "8611571829736123904",
+          "model_id": "<model_od>",
           "data": [[1, 2], [3, 4], [5, 6]]
         }'
 ```
+
 ```bash
 - Delete Request
 
 `curl -X DELETE "http://localhost:8000/delete" \
     -H "Content-Type: application/json" \
+    -H "Authorization: Bearer <token>" \
     -d '{
-          "model_id": "8611571829736123904"
+          "model_id": "<model_id>"
         }'
 ```
 - Healthcheck Request
 ```bash
    curl -X GET "http://localhost:8000/status"
 ```
-```
+```bash
 - Listing Request
 ```bash
 `curl -X GET "http://localhost:8000/models"
@@ -105,6 +116,7 @@ curl -X POST "http://localhost:8000/predict" \
    - `grpc_client.py`: файл пример использования интерфейса.
    - `message_interface.proto`: protobuf протокол определяющий интерфейс сообщений и методов.
 - `dashboard.py`: Файл, формирующий веб-дашборд
+- `auth.py`: Файл-аутентификатор
 
 ## Альтернативный вариант - grpc.
 - Запуск сервера
