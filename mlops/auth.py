@@ -1,11 +1,13 @@
 from datetime import datetime, timedelta
 from typing import Optional
 from jose import JWTError, jwt
-from fastapi import Depends, HTTPException
+from fastapi import HTTPException
 from fastapi.security import OAuth2PasswordBearer
 from pydantic import BaseModel
+import os
 
-SECRET_KEY = "my_secret_key" #Потом перенести в переменную окружения
+
+SECRET_KEY = os.environ.get("SECRET_KEY")
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 600
 
