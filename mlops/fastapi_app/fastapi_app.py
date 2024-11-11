@@ -5,6 +5,7 @@ from mlops.fastapi_app.pydantic import TrainRequest, PredictRequest, DeleteReque
 from mlops.fastapi_app.auth import create_access_token, verify_token, oauth2_scheme
 import logging
 from datetime import timedelta
+import os
 
 app = FastAPI()
 
@@ -13,8 +14,8 @@ logger = logging.getLogger(__name__)
 
 db = { # Потом надо заменить на postrgres, для авторизации пользователей
     "admin": {
-        "username": "admin",
-        "password": "password123"
+        "username": os.environ.get("USERNAME"),
+        "password": os.environ.get("PASSWORD")
     }
 }
 
