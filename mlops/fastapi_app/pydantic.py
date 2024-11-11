@@ -16,6 +16,10 @@ class DeleteRequest(BaseModel):
     model_config  = ConfigDict(protected_namespaces=())
     model_id: str
 
+class TokenRequest(BaseModel):
+    username: str
+    password: str
+
 class TokenResponse(BaseModel):
     access_token: str
     token_type: str

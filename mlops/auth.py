@@ -4,10 +4,9 @@ from jose import JWTError, jwt
 from fastapi import HTTPException
 from fastapi.security import OAuth2PasswordBearer
 from pydantic import BaseModel
-import os
 
 
-SECRET_KEY = os.environ.get("SECRET_KEY")
+SECRET_KEY = "my_secret_key" #os.environ.get("SECRET_KEY")
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 600
 
