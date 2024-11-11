@@ -1,5 +1,5 @@
 
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Depends
 from mlops.fastapi_app.model_framework import train_model, predict, delete_model, list_models
 from mlops.fastapi_app.pydantic import TrainRequest, PredictRequest, DeleteRequest
 from mlops.fastapi_app.auth import create_access_token, verify_token, oauth2_scheme
@@ -19,7 +19,7 @@ db = { # Потом надо заменить на postrgres, для автор�
 }
 
 def authenticate_user(username: str, password: str):
-    user = fake_users_db.get(username)
+    user = db.get(username)
     if not user or user["password"] != password:
         return False
     return user
@@ -33,16 +33,17 @@ def login(username: str, password: str):
     return {"access_token": access_token, "token_type": "bearer"}
 
 @app.get("/models")
-def show_models():
+def show_models(token: str = Depends(oauth2_scheme)):
     logger.info("Запрос на получение списка доступных моделей")
     return list_models()
 
 @app.post("/train")
-def train_model_endpoint(request: TrainRequest):
+def train_model_endpoint(request: TrainRequest, token: str = Depends(oauth2_scheme)):
     """
-    API trigger model training for specified model type on
-    transferred data with given hyperparametes. Return id of model.
+    API триггерит обучение определенной модели на переданных данных
+    с определенными гиперпараметрами. Возвращает id модели.
     """
+    verify_token(token)
     logger.info("Получен запрос на обучение модели: %s", request.model_type)
     try:
         model_id = train_model(request.model_type,
@@ -55,8 +56,8 @@ def train_model_endpoint(request: TrainRequest):
         raise HTTPException(status_code=400, detail=str(e))
 
 @app.post("/predict")
-def predict_endpoint(request: PredictRequest):
-    """API trigger inference for specified model type transferred data."""
+def predict_endpoint(request: PredictRequest, token: str = Depends(oauth2_scheme)):
+    """API триггерит инференс определенной модели на переданных данных."""
     logger.info("Получен запрос на предсказание для модели: %s", request.model_id)
     try:
         predictions = predict(request.model_id, request.data)
@@ -66,8 +67,8 @@ def predict_endpoint(request: PredictRequest):
         raise HTTPException(status_code=404, detail=str(e))
 
 @app.delete("/delete")
-def delete_model_endpoint(request: DeleteRequest):
-    """API delete model from model registry(dict)"""
+def delete_model_endpoint(request: DeleteRequest, token: str = Depends(oauth2_scheme)):
+    """API удаляет модель из model registry(dict)"""
     logger.info("Получен запрос на удаление модели: %s", request.model_id)
     if delete_model(request.model_id):
         logger.info("Модель %s успешно удалена", request.model_id)
