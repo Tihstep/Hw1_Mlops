@@ -2,12 +2,35 @@
 from fastapi import FastAPI, HTTPException
 from mlops.fastapi_app.model_framework import train_model, predict, delete_model, list_models
 from mlops.fastapi_app.pydantic import TrainRequest, PredictRequest, DeleteRequest
+from mlops.fastapi_app.auth import create_access_token, verify_token, oauth2_scheme
 import logging
+from datetime import timedelta
 
 app = FastAPI()
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
+
+db = { # Потом надо заменить на postrgres, для авторизации пользователей
+    "admin": {
+        "username": "admin",
+        "password": "password123"
+    }
+}
+
+def authenticate_user(username: str, password: str):
+    user = fake_users_db.get(username)
+    if not user or user["password"] != password:
+        return False
+    return user
+
+@app.post("/token")
+def login(username: str, password: str):
+    user = authenticate_user(username, password)
+    if not user:
+        raise HTTPException(status_code=401, detail="Invalid credentials")
+    access_token = create_access_token(data={"sub": user["username"]}, expires_delta=timedelta(minutes=30))
+    return {"access_token": access_token, "token_type": "bearer"}
 
 @app.get("/models")
 def show_models():
