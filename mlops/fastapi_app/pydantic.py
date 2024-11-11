@@ -15,3 +15,7 @@ class PredictRequest(BaseModel):
 class DeleteRequest(BaseModel):
     model_config  = ConfigDict(protected_namespaces=())
     model_id: str
+
+class TokenResponse(BaseModel):
+    access_token: str
+    token_type: str
