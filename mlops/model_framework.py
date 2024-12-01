@@ -76,4 +76,3 @@ def list_models():
     if len(models) == 0:
         return "System does not have any trained models"
     return list(map(str, list(models.keys())))
-
