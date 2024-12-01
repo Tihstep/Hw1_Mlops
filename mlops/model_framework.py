@@ -27,11 +27,14 @@ def train_model(model_type: str, hyperparameters: Dict[str, Any], data: Dict[str
         model_type : `str`
             Name of model type
     """
+    model_functions = {
+        "logistic_regression": LogisticRegression,
+        "decision_tree": RandomForestClassifier
+    }
+
     model_id = hash(model_type + str(hyperparameters.items()))
-    if model_type == "logistic_regression":
-        model = LogisticRegression(**hyperparameters)
-    elif model_type == "random_forest":
-        model = RandomForestClassifier(**hyperparameters)
+    if model_type in model_functions:
+        model = model_functions[model_type](**hyperparameters)
     else:
         raise ValueError("Wrong unsupported model type")
 
