@@ -69,10 +69,7 @@ def predict(model_id: str, data: List[List[float]]):
 
 def delete_model(model_id: str):
     """Delete a model_id model."""
-    if model_id in models:
-        del models[model_id]
-        return True
-    return False
+    del models[model_id]
 
 def list_models():
     """List all available models"""

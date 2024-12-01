@@ -71,10 +71,14 @@ def predict_endpoint(request: PredictRequest, token: str = Depends(oauth2_scheme
 def delete_model_endpoint(request: DeleteRequest, token: str = Depends(oauth2_scheme)):
     """API удаляет модель из model registry(dict)"""
     logger.info("Получен запрос на удаление модели: %s", request.model_id)
-    if delete_model(request.model_id):
+    try:
+        delete_model(request.model_id)
+    except NameError:
+        print("Модели с указанным id не существует")
+        raise HTTPException(status_code=404, detail="Sorry, model not found!")
+    else:
         logger.info("Модель %s успешно удалена", request.model_id)
-        return {"status": "deleted"}
-    raise HTTPException(status_code=404, detail="Sorry, model not found!")
+    return {"status": "deleted"}
 
 @app.get("/status")
 def health_check():
