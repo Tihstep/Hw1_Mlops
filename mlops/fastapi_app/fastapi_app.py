@@ -1,5 +1,5 @@
 from fastapi import FastAPI, HTTPException, Depends
-from mlops.fastapi_app.model_framework import train_model, predict, delete_model, list_models
+from mlops.model_framework import train_model, predict, delete_model, list_models
 from mlops.fastapi_app.pydantic import TrainRequest, PredictRequest, DeleteRequest, TokenRequest
 from mlops.auth import create_access_token, verify_token, oauth2_scheme
 import logging
