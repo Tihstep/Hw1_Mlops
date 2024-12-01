@@ -16,6 +16,7 @@ pydantic = "^2.9.2"
 streamlit = "^1.40.0"
 ruff = "^0.7.3"
 python-jose = "^3.3.0"
+psutil = "^6.1.0"
 
 
 [build-system]

@@ -2,8 +2,10 @@ from fastapi import FastAPI, HTTPException, Depends
 from mlops.model_framework import train_model, predict, delete_model, list_models
 from mlops.fastapi_app.pydantic import TrainRequest, PredictRequest, DeleteRequest, TokenRequest
 from mlops.auth import create_access_token, verify_token, oauth2_scheme
+
 import logging
 from datetime import timedelta
+import psutil
 
 app = FastAPI()
 
@@ -78,5 +80,19 @@ def delete_model_endpoint(request: DeleteRequest, token: str = Depends(oauth2_sc
 def health_check():
     """API check if servise is available."""
     logger.info("Запрос проверки статуса сервиса")
-    return {"status": "All is OK! Server fill himself good!"}
+
+    cpu_usage = psutil.cpu_percent(interval=1)
+    
+    memory = psutil.virtual_memory()
+    memory_usage = memory.percent
+    
+    disk = psutil.disk_usage('/')
+    disk_usage = disk.percent
+    
+    return {"status": f"""All is OK! Server fill himself good! 
+                        CPU Usage: {cpu_usage}% 
+                        Memory Usage: {memory_usage}% 
+                        Disk Usage: {disk_usage}%
+                        """
+                }
 
