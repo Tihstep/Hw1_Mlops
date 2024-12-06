@@ -35,7 +35,7 @@ def login(request: TokenRequest):
     if not user:
         raise HTTPException(status_code=401, detail="Invalid credentials")
     access_token = create_access_token(data={"sub": user["username"]}, expires_delta=timedelta(minutes=30))
-    return {"access_token": access_token, "token_type": "bearer"}
+    return {"access_token": access_token}
 
 @app.get("/models")
 def show_models():
@@ -51,7 +51,7 @@ def train_model_endpoint(request: TrainRequest, token: str = Depends(oauth2_sche
     API триггерит обучение определенной модели на переданных данных
     с определенными гиперпараметрами. Возвращает id модели.
     """
-    verify_token(token)
+    #verify_token(token)
     logger.info("Получен запрос на обучение модели: %s", request.model_type)
     try:
         # Загрузка данных в MinIO
