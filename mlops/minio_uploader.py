@@ -10,7 +10,7 @@ minio_client = Minio(
     secure=False,
 )
 
-bucket_name = "datasets-test"
+bucket_name = "data"
 
 try:
     if not minio_client.bucket_exists(bucket_name):
@@ -30,18 +30,20 @@ def upload_to_minio(data: dict, filename: str):
     Returns:
         str: Путь к загруженному файлу в MinIO.
     """
-    print("!!!!!!!!!!!!!!!!!!!!\n\n\n\n")
-    local_path = f"./data/{filename}"
-    os.makedirs("./data", exist_ok=True)
+    local_path = f"./{bucket_name}/{filename}"
+    os.makedirs(f"./{bucket_name}", exist_ok=True)
     
     with open(local_path, "w") as f:
         f.write(str(data))
-    print("?????????????????\n\n\n\n")
-    #repo = Repo()
-    #repo.add(local_path)
-    print("?????????????????\n\n\n\n")
-    #repo.push(targets=[local_path])
-    print("!!!!!!!!!?\n\n\n\n")
-    minio_client.fput_object(bucket_name, filename, local_path)
+
+    if not os.path.exists('.dvc'):
+        repo = Repo.init()
+
+    repo = Repo()
+    repo.add(local_path)
+    repo.push(targets=[local_path])
+
+    
+    #minio_client.fput_object(bucket_name, filename, local_path)
 
     return f"s3://{bucket_name}/{filename}"

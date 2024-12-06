@@ -54,10 +54,11 @@ def train_model_endpoint(request: TrainRequest, token: str = Depends(oauth2_sche
     #verify_token(token)
     logger.info("Получен запрос на обучение модели: %s", request.model_type)
     try:
+        hyperparameters_hash = hash(str(request.hyperparameters.items()))
         # Загрузка данных в MinIO
         minio_path = upload_to_minio(
-            data=request.data, 
-            filename=f"{request.model_type}_train_data.json"
+            data=request.data,
+            filename=f"{request.model_type}_{hyperparameters_hash}_train_data.json"
         )
         logger.info("Данные загружены и версионированы: %s", minio_path)
 

@@ -2,6 +2,7 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.ensemble import RandomForestClassifier
 from typing import Dict, Any, List
 import logging
+import json
 
 models = {}
 
@@ -31,8 +32,10 @@ def train_model(model_type: str, hyperparameters: Dict[str, Any], data: Dict[str
         "logistic_regression": LogisticRegression,
         "decision_tree": RandomForestClassifier
     }
+    serialized_data = json.dumps(data, sort_keys=True)
+    combined_str = serialized_data + model_type + str(hyperparameters.items())
+    model_id = hash(combined_str)
 
-    model_id = hash(model_type + str(hyperparameters.items()))
     if model_type in model_functions:
         model = model_functions[model_type](**hyperparameters)
     else:
