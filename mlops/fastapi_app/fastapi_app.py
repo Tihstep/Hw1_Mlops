@@ -2,7 +2,6 @@ from fastapi import FastAPI, HTTPException, Depends
 from mlops.model_framework import train_model, predict, delete_model, list_models
 from mlops.fastapi_app.schemas import TrainRequest, PredictRequest, DeleteRequest, TokenRequest
 from mlops.auth import create_access_token, verify_token, oauth2_scheme
-from mlops.minio_uploader import upload_to_minio
 
 import logging
 from datetime import timedelta
@@ -18,6 +17,8 @@ db = {  "vertica" : {
         "password": "vertica" #os.environ.get("PASSWORD")}
         }
 }
+
+
 
 def authenticate_user(username: str, password: str):
     user = db.get(username)
@@ -43,7 +44,7 @@ def show_models():
     API предоставляет список обученных ранее моделей.
     """
     logger.info("Запрос на получение списка доступных моделей")
-    return list_models()
+    return list_models() 
 
 @app.post("/train")
 def train_model_endpoint(request: TrainRequest, token: str = Depends(oauth2_scheme)):
@@ -54,14 +55,6 @@ def train_model_endpoint(request: TrainRequest, token: str = Depends(oauth2_sche
     #verify_token(token)
     logger.info("Получен запрос на обучение модели: %s", request.model_type)
     try:
-        hyperparameters_hash = hash(str(request.hyperparameters.items()))
-        # Загрузка данных в MinIO
-        minio_path = upload_to_minio(
-            data=request.data,
-            filename=f"{request.model_type}_{hyperparameters_hash}_train_data.json"
-        )
-        logger.info("Данные загружены и версионированы: %s", minio_path)
-
         model_id = train_model(request.model_type,
                                request.hyperparameters,
                                request.data
