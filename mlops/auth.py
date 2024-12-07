@@ -3,7 +3,7 @@ from typing import Optional
 from jose import JWTError, jwt
 from fastapi import HTTPException
 from fastapi.security import OAuth2PasswordBearer
-from schemas import BaseModel
+from pydantic import BaseModel
 
 
 SECRET_KEY = "my_secret_key" #os.environ.get("SECRET_KEY")

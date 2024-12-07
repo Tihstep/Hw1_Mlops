@@ -1,9 +1,20 @@
+import os
 from sklearn.linear_model import LogisticRegression
 from sklearn.ensemble import RandomForestClassifier
 from typing import Dict, Any, List
 import logging
+import json
+import pickle
+from mlops.model_collector import ModelCollector
+from mlops.minio_uploader import Minio_client
+from clearml import Task
 
-models = {}
+minio_uploader = Minio_client()
+model_collector = ModelCollector(minio_uploader.minio_client, 'models')
+
+# Создание задачи (эксперимента)
+task = Task.init(project_name="saltikhomirov", task_name="MyExperiment")
+
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
@@ -27,23 +38,44 @@ def train_model(model_type: str, hyperparameters: Dict[str, Any], data: Dict[str
         model_type : `str`
             Name of model type
     """
+
+
     model_functions = {
         "logistic_regression": LogisticRegression,
         "decision_tree": RandomForestClassifier
     }
 
-    model_id = hash(model_type + str(hyperparameters.items()))
     if model_type in model_functions:
         model = model_functions[model_type](**hyperparameters)
     else:
         raise ValueError("Wrong unsupported model type")
 
+    # Логирование гиперпараметров
+    task.connect(hyperparameters)
+
     target = data['target']
     train_data = data['train_data']
 
-
     model.fit(train_data, target)
-    models[str(model_id)] = model
+
+    # Определяем уникальный ключ
+    model_spec = model_type + str(hyperparameters.items())
+    serialized_data = json.dumps(data, sort_keys=True)
+    model_id = hash(serialized_data + model_spec)
+
+    # Логирование результатов
+    task.get_logger().report_scalar("coef_", "train", value=model.coef_)
+    task.get_logger().report_scalar("intercept_", "train", value=model.intercept_)
+
+    # Версионируем данные в dvc
+    minio_uploader.upload_to_minio(data, f"{model_spec}_train_data.json")
+
+    # Сохраняем модель в s3
+    os.makedirs("./models/", exist_ok=True)
+    with open(f'./models/model_{model_id}.pkl','wb') as f:
+        pickle.dump(model,f)
+    model_collector.add_model(model_id=str(model_id), model_path=f'./models/model_{model_id}.pkl')
+
     return model_id
 
 def predict(model_id: str, data: List[List[float]]):
@@ -62,18 +94,37 @@ def predict(model_id: str, data: List[List[float]]):
         prediction : `list`
             Result of model usage for data.
     """
-    model = models.get(model_id)
+    os.makedirs("./models", exist_ok=True)
+
+    # Берем модель из s3
+    model_path = model_collector.get_model(
+                                model_id=model_id, 
+                                model_path=f'./models/model_{model_id}.pkl'
+                                        )
+
+    with open(model_path,'rb') as f:
+        model = pickle.load(f)
+
     if not model:
         raise ValueError("Model not found")
     return model.predict(data).tolist()
 
 def delete_model(model_id: str):
     """Delete a model_id model."""
-    del models[model_id]
+    if model_id not in model_collector.models:
+        raise ValueError(f"Model with ID {model_id} does not exist.")
+
+    #model_collector.delete_model(model_id)
+    local_model_path = f"./models/model_{model_id}.pkl"
+
+    if os.path.exists(local_model_path):
+        os.remove(local_model_path)
+        logger.info(f"Local file {local_model_path} deleted.")
+    del model_collector.models[model_id]
+    logger.info(f"Model {model_id} removed from ModelCollector.")
 
 def list_models():
     """List all available models"""
-    if len(models) == 0:
+    if len(model_collector.models) == 0:
         return "System does not have any trained models"
-    return list(map(str, list(models.keys())))
-
+    return list(map(str, list(model_collector.models.keys())))
