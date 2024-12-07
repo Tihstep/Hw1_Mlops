@@ -20,6 +20,7 @@ psutil = "^6.1.0"
 dvc = "^3.57.0"
 minio = "^7.2.12"
 dvc-s3 = "^3.2.0"
+clearml = "^1.16.5"
 
 
 [build-system]

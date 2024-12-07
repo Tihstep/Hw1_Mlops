@@ -7,9 +7,14 @@ import json
 import pickle
 from mlops.model_collector import ModelCollector
 from mlops.minio_uploader import Minio_client
+from clearml import Task
 
 minio_uploader = Minio_client()
 model_collector = ModelCollector(minio_uploader.minio_client, 'models')
+
+# Создание задачи (эксперимента)
+task = Task.init(project_name="saltikhomirov", task_name="MyExperiment")
+
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
@@ -45,6 +50,9 @@ def train_model(model_type: str, hyperparameters: Dict[str, Any], data: Dict[str
     else:
         raise ValueError("Wrong unsupported model type")
 
+    # Логирование гиперпараметров
+    task.connect(hyperparameters)
+
     target = data['target']
     train_data = data['train_data']
 
@@ -55,11 +63,15 @@ def train_model(model_type: str, hyperparameters: Dict[str, Any], data: Dict[str
     serialized_data = json.dumps(data, sort_keys=True)
     model_id = hash(serialized_data + model_spec)
 
+    # Логирование результатов
+    task.get_logger().report_scalar("coef_", "train", value=model.coef_)
+    task.get_logger().report_scalar("intercept_", "train", value=model.intercept_)
+
     # Версионируем данные в dvc
-    minio_path = minio_uploader.upload_to_minio(data, f"{model_spec}_train_data.json")
+    minio_uploader.upload_to_minio(data, f"{model_spec}_train_data.json")
 
     # Сохраняем модель в s3
-    os.makedirs(f"./models/", exist_ok=True)
+    os.makedirs("./models/", exist_ok=True)
     with open(f'./models/model_{model_id}.pkl','wb') as f:
         pickle.dump(model,f)
     model_collector.add_model(model_id=str(model_id), model_path=f'./models/model_{model_id}.pkl')
@@ -82,7 +94,7 @@ def predict(model_id: str, data: List[List[float]]):
         prediction : `list`
             Result of model usage for data.
     """
-    os.makedirs(f"./models", exist_ok=True)
+    os.makedirs("./models", exist_ok=True)
 
     # Берем модель из s3
     model_path = model_collector.get_model(

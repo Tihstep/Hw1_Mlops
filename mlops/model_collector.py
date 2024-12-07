@@ -1,7 +1,11 @@
 import os
-from minio import Minio
 from minio.error import S3Error
 import pickle
+import logging
+
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+logger = logging.getLogger(__name__)
+
 
 class ModelCollector:
     def __init__(self, minio_client, bucket_name):
@@ -51,7 +55,7 @@ class ModelCollector:
 
         try:
             if model_id in self._models:
-                os.makedirs(f"./models/", exist_ok=True)
+                os.makedirs("./models/", exist_ok=True)
                 with open(model_path,'wb') as f:
                     pickle.dump(self._models[model_id],f)
                     return model_path
