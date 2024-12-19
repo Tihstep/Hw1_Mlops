@@ -1,0 +1,28 @@
+[tool.poetry]
+name = "mlops"
+version = "0.1.0"
+description = "Homework for first homework of mlops course Ftiad"
+authors = ["Tihstep <TihstepML@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+fastapi = "^0.115.4"
+uvicorn = "^0.32.0"
+grpcio = "^1.67.1"
+grpcio-tools = "^1.67.1"
+scikit-learn = "^1.5.2"
+pydantic = "^2.9.2"
+streamlit = "^1.40.0"
+ruff = "^0.7.3"
+python-jose = "^3.3.0"
+psutil = "^6.1.0"
+dvc = "^3.57.0"
+minio = "^7.2.12"
+dvc-s3 = "^3.2.0"
+clearml = "^1.16.5"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
