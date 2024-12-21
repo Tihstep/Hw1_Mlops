@@ -38,35 +38,10 @@ services:
     networks:
       - app_network
 
-  clearml-agent:
-    image: allegroai/clearml-agent:latest
-    environment:
-      CLEARML_AGENT_WORKER_NAME: "worker_1"
-      CLEARML_API_ACCESS_KEY: "QA82E184K40OMKN60B5TF0964UPFPU"
-      CLEARML_API_SECRET_KEY: "YpF78YHhfCfZFq_RM-LlIky_eXgiJgJBWqocAcqYiNM3zOcbArnerQGagBhDdvhnJSI"
-      CLEARML_API_SERVER: "https://app.clear.ml"
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-      - ~/.clearml:/root/.clearml
-
-  clearml-server:
-    image: allegroai/clearml:latest
-    ports:
-      - "8080:8080" 
-      - "8081:8081"
-      - "8082:8082"
-    environment:
-      CLEARML_APPLY_MONGO_PATCH: "true"
-    volumes:
-      - clearml_data:/opt/clearml/data
-      - clearml_logs:/opt/clearml/logs
-
 
 volumes:
   minio-storage:
   postgres_data:
-  clearml_data:
-  clearml_logs:
 
 networks:
   app_network:

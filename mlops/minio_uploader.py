@@ -17,9 +17,14 @@ class Minio_client:
 
     def _ensure_bucket_exists(self):
         try:
+            print(1, self.minio_client, self.bucket_name, self.minio_client.bucket_exists(self.bucket_name))
             if not self.minio_client.bucket_exists(self.bucket_name):
+                print(2)
                 self.minio_client.make_bucket(self.bucket_name)
+                print(3)
+            print(4)
         except S3Error as e:
+            print(5)
             print(f"Ошибка при создании бакета: {e}")
 
 

@@ -7,13 +7,10 @@ import json
 import pickle
 from mlops.model_collector import ModelCollector
 from mlops.minio_uploader import Minio_client
-from clearml import Task
+
 
 minio_uploader = Minio_client()
 model_collector = ModelCollector(minio_uploader.minio_client, 'models')
-
-# Создание задачи (эксперимента)
-task = Task.init(project_name="saltikhomirov", task_name="MyExperiment")
 
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -50,9 +47,6 @@ def train_model(model_type: str, hyperparameters: Dict[str, Any], data: Dict[str
     else:
         raise ValueError("Wrong unsupported model type")
 
-    # Логирование гиперпараметров
-    task.connect(hyperparameters)
-
     target = data['target']
     train_data = data['train_data']
 
@@ -62,11 +56,6 @@ def train_model(model_type: str, hyperparameters: Dict[str, Any], data: Dict[str
     model_spec = model_type + str(hyperparameters.items())
     serialized_data = json.dumps(data, sort_keys=True)
     model_id = hash(serialized_data + model_spec)
-
-    # Логирование результатов
-    task.get_logger().report_scalar("coef_", "train", value=model.coef_)
-    task.get_logger().report_scalar("intercept_", "train", value=model.intercept_)
-
     # Версионируем данные в dvc
     minio_uploader.upload_to_minio(data, f"{model_spec}_train_data.json")
 

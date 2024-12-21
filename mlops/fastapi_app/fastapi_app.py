@@ -18,8 +18,6 @@ db = {  "vertica" : {
         }
 }
 
-
-
 def authenticate_user(username: str, password: str):
     user = db.get(username)
     if not user or user["password"] != password:

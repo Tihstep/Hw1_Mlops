@@ -1722,6 +1722,17 @@ files = [
 all = ["flake8 (>=7.1.1)", "mypy (>=1.11.2)", "pytest (>=8.3.2)", "ruff (>=0.6.2)"]
 
 [[package]]
+name = "iniconfig"
+version = "2.0.0"
+description = "brain-dead simple config-ini parsing"
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "iniconfig-2.0.0-py3-none-any.whl", hash = "sha256:b6a85871a79d2e3b22d2d1b94ac2824226a63c6b741c88f7ae975f18b6778374"},
+    {file = "iniconfig-2.0.0.tar.gz", hash = "sha256:2d91e135bf72d31a410b17c16da610a82cb55f6b0477d1a902134b24a455b8b3"},
+]
+
+[[package]]
 name = "iterative-telemetry"
 version = "0.0.9"
 description = "Common library for sending telemetry"
@@ -2518,6 +2529,21 @@ test = ["appdirs (==1.4.4)", "covdefaults (>=2.3)", "pytest (>=8.3.2)", "pytest-
 type = ["mypy (>=1.11.2)"]
 
 [[package]]
+name = "pluggy"
+version = "1.5.0"
+description = "plugin and hook calling mechanisms for python"
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "pluggy-1.5.0-py3-none-any.whl", hash = "sha256:44e1ad92c8ca002de6377e165f3e0f1be63266ab4d554740532335b9d75ea669"},
+    {file = "pluggy-1.5.0.tar.gz", hash = "sha256:2cffa88e94fdc978c4c574f15f9e59b7f4201d439195c3715ca9e2486f1d0cf1"},
+]
+
+[package.extras]
+dev = ["pre-commit", "tox"]
+testing = ["pytest", "pytest-benchmark"]
+
+[[package]]
 name = "prompt-toolkit"
 version = "3.0.48"
 description = "Library for building powerful interactive command lines in Python"
@@ -3071,6 +3097,45 @@ files = [
 
 [package.extras]
 diagrams = ["jinja2", "railroad-diagrams"]
+
+[[package]]
+name = "pytest"
+version = "8.3.4"
+description = "pytest: simple powerful testing with Python"
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "pytest-8.3.4-py3-none-any.whl", hash = "sha256:50e16d954148559c9a74109af1eaf0c945ba2d8f30f0a3d3335edde19788b6f6"},
+    {file = "pytest-8.3.4.tar.gz", hash = "sha256:965370d062bce11e73868e0335abac31b4d3de0e82f4007408d242b4f8610761"},
+]
+
+[package.dependencies]
+colorama = {version = "*", markers = "sys_platform == \"win32\""}
+iniconfig = "*"
+packaging = "*"
+pluggy = ">=1.5,<2"
+
+[package.extras]
+dev = ["argcomplete", "attrs (>=19.2)", "hypothesis (>=3.56)", "mock", "pygments (>=2.7.2)", "requests", "setuptools", "xmlschema"]
+
+[[package]]
+name = "pytest-docker"
+version = "3.1.1"
+description = "Simple pytest fixtures for Docker and Docker Compose based tests"
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "pytest-docker-3.1.1.tar.gz", hash = "sha256:2371524804a752aaa766c79b9eee8e634534afddb82597f3b573da7c5d6ffb5f"},
+    {file = "pytest_docker-3.1.1-py3-none-any.whl", hash = "sha256:fd0d48d6feac41f62acbc758319215ec9bb805c2309622afb07c27fa5c5ae362"},
+]
+
+[package.dependencies]
+attrs = ">=19.2.0"
+pytest = ">=4.0,<9.0"
+
+[package.extras]
+docker-compose-v1 = ["docker-compose (>=1.27.3,<2.0)"]
+tests = ["mypy (>=0.500,<2.000)", "pytest-mypy (>=0.10,<1.0)", "pytest-pycodestyle (>=2.0.0,<3.0)", "pytest-pylint (>=0.14.1,<1.0)", "requests (>=2.22.0,<3.0)", "types-requests (>=2.31,<3.0)", "types-setuptools (>=69.0,<70.0)"]
 
 [[package]]
 name = "python-dateutil"
@@ -4247,4 +4312,4 @@ test = ["zope.testing"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "0ec244fc83eed828a9e075db409ea779f01b3d05fe2c1f7cd758e719d29e8001"
+content-hash = "33df15aab056a3e248cf7c7d9ec8148e100871a887c442e46c61c9f1cf2dabcb"
