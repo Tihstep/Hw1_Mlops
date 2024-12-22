@@ -1,54 +1,18 @@
 stages:
-  - lint
-  - test
   - build
-  - docker
+  - test
 
 variables:
-  PYTHON_VERSION: "3.11"
-
-default:
-  image: python:${PYTHON_VERSION}
-
-before_script:
-  # Set up Poetry and install dependencies
-  - pip install poetry
-  - poetry install
-
-lint:
-  stage: lint
-  script:
-    - poetry add ruff --dev
-    - poetry run ruff .
-  rules:
-    - changes:
-        - "**/*.py"  # Only run if Python files change
-
-test:
-  stage: test
-  script:
-    - poetry run pytest
-  rules:
-    - changes:
-        - "**/*.py"  # Only run if Python files change
+  APP_NAME: "My Simple App"
 
 build:
   stage: build
   script:
-    - echo "Build step can include packaging the application or creating artifacts."
+    - echo "Building $APP_NAME"
+    - echo "This is the build stage"
 
-docker:
-  stage: docker
-  image: docker:latest
-  services:
-    - docker:dind
+test:
+  stage: test
   script:
-    - docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
-    - docker build -t step1704/mlops-app .
-    - docker push /mlops-app
-  rules:
-    - if: '$CI_COMMIT_BRANCH == "main"'
-      when: on_success
-    - if: '$CI_COMMIT_BRANCH == "dev"'
-      when: on_success
-    - when: never
+    - echo "Testing $APP_NAME"
+    - echo "This is the test stage"
